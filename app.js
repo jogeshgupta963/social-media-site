@@ -1,11 +1,15 @@
 const express = require('express')
 const cors = require('cors')
+const cookieParser = require("cookie-parser")
 require('dotenv').config()
 
 const dbConnect = require('./server/dbConnect/connect')
 
 const app = express()
+
+//middlewares
 app.use(express.json());
+app.use(cookieParser())
 app.use(cors());
 
 //routes
@@ -15,8 +19,8 @@ const authRouter = require('./server/routes/auth')
 const profileRouter = require('./server/routes/profile')
 
 app.use('/api/v1/user', userRouter)
-app.use('/api/v1/post', postRouter)
 app.use('/api/v1/auth', authRouter)
+app.use('/api/v1/post', postRouter)
 app.use('/api/v1/profile', profileRouter);
 
 //connecting database
