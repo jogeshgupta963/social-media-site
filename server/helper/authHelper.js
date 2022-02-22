@@ -10,12 +10,16 @@ function jwtVerify(req, res, next) {
         let token = req.cookies.JWT
 
         let isLoggedIn = jwt.verify(token, process.env.JWT_SECRET)
+        if (req.body != {} && isLoggedIn) {
+            req.body.user = isLoggedIn.payload;
+            next()
+        }
         if (isLoggedIn) {
             req.body = isLoggedIn
             next();
         }
         else {
-            res.status(300).json("wrong jwt")
+            return res.status(300).json("wrong jwt")
         }
 
     } catch (error) {
@@ -38,4 +42,13 @@ async function validation(req, res, next) {
         res.status(400).json({ err: "helper" + err.message })
     }
 }
-module.exports = { jwtVerify, validation }
+function authData(req, res, next) {
+
+    const { status, skills } = req.body;
+    if (status == "" || status == null || status == undefined || skills == "") {
+        return res.status(400).json("status or skills is invalid")
+    }
+    next()
+}
+
+module.exports = { jwtVerify, validation, authData }
