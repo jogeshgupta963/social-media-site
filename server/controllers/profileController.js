@@ -15,7 +15,7 @@ async function getProfile(req, res) {
     res.status(200).json(prof)
 
 }
-//@route GET /api/v1/profile/
+//@route POST /api/v1/profile/
 async function postProfile(req, res) {
 
     try {
