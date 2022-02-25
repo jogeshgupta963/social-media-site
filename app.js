@@ -30,6 +30,6 @@ app.use('/api/v1/profile', profileRouter);
         console.log("db Connected")
         app.listen(80, () => console.log("server Started"))
     } catch (error) {
-        console.log("error in db connection")
+        console.log(error.message)
     }
 })();

@@ -3,7 +3,8 @@ const mongoose = require('mongoose')
 function dbConnect(url) {
     return mongoose.connect(url, {
         useNewUrlParser: "true",
-        useUnifiedTopology: "true"
+        useUnifiedTopology: "true",
+
     })
 
 }
