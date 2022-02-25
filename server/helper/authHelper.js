@@ -14,12 +14,11 @@ function jwtVerify(req, res, next) {
             req.body.user = isLoggedIn.payload;
             next()
         }
-        if (isLoggedIn) {
+        else if (isLoggedIn) {
             req.body = isLoggedIn
             next();
-        }
-        else {
-            return res.status(300).json("wrong jwt")
+        } else {
+            throw new Error
         }
 
     } catch (error) {
@@ -48,7 +47,7 @@ function authData(req, res, next) {
     if (status == "" || status == null || status == undefined || skills == "") {
         return res.status(400).json("status or skills is invalid")
     }
-    next()
+    else next()
 }
 
 module.exports = { jwtVerify, validation, authData }
