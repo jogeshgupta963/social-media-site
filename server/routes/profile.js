@@ -1,8 +1,8 @@
 const express = require("express")
-const { jwtVerify, authData } = require('../helper/authHelper')
+const { jwtVerify } = require('../helper/authHelper')
 // const { getProfile, saveProfile } = require('../controllers/profileController')
-const { getProfile, postProfile, getAllProfiles, getUserProfile, deleteUserProfile } = require('../controllers/profile')
-
+const { getProfile, postProfile, getAllProfiles, getUserProfile, deleteUserProfile, putExp, deleteExp, putEdu, deleteEdu } = require('../controllers/profile')
+const { profileExpValidation, profileEduValidation } = require('../helper/validation')
 const profileRouter = express.Router()
 
 
@@ -36,4 +36,20 @@ profileRouter
 profileRouter
     .route('/user/:id_user')
     .delete(jwtVerify, deleteUserProfile)
+
+//@route PUT /api/v1/profile/experience        DELETE /api/v1/profile/experience
+//@desc  to update user profiles experience         to delete user profile's experience
+profileRouter
+    .route('/experience')
+    .put(jwtVerify, profileExpValidation, putExp)
+    .delete(jwtVerify, deleteExp)
+
+//@route PUT /api/v1/profile/education        DELETE /api/v1/profile/education
+//@desc  to update user profiles education         to delete user profile's education
+profileRouter
+    .route('/education')
+    .put(jwtVerify, profileEduValidation, putEdu)
+    .delete(jwtVerify, deleteEdu)
+
+
 module.exports = profileRouter

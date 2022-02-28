@@ -23,4 +23,27 @@ async function validation(req, res, next) {
         res.status(400).json({ err: err.message })
     }
 }
-module.exports = { validation }
+
+async function profileExpValidation(req, res, next) {
+    try {
+        let { title, company, date } = req.body;
+        if (title === "" || company === "" || date === "") {
+            return res.json("title,company or date unfilled");
+        }
+        else next();
+    } catch (error) {
+        res.status(500).json(error.message);
+    }
+}
+async function profileEduValidation(req, res, next) {
+    try {
+        let { school, degree } = req.body;
+        if (school === "" || degree === "") {
+            return res.json("school or degree  unfilled");
+        }
+        else next();
+    } catch (error) {
+        res.status(500).json(error.message);
+    }
+}
+module.exports = { validation, profileExpValidation, profileEduValidation }

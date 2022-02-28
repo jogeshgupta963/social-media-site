@@ -13,11 +13,12 @@ async function postProfile(req, res) {
         let data = req.body;
         let isExist = await profileModel.findOne({ user: data.user })
         // data.skills = data.skills[0].split(',').map(skills => skills.trim())
-        console.log("splitt")
+        // console.log("splitt")
         // let skills = data.skills.split(',')
         // data.skills = skills;
-        let string = data.skills;
-        data.skills = string.toString().split(',');
+        let skills = data.skills;
+        data.skills = skills.toString().split(',');
+
         let profile = new profileModel(data);
         if (!isExist) {
             profile.save();
@@ -27,7 +28,7 @@ async function postProfile(req, res) {
         let user = await profileModel.findOneAndUpdate({ user: data.user }, data)
         return res.status(200).json("saved");
     } catch (error) {
-        console.log("Err here")
+        // console.log("Err here")
         res.status(400).json(error.message);
     }
 }
@@ -86,4 +87,56 @@ async function deleteUserProfile(req, res) {
     }
 }
 
-module.exports = { getProfile, postProfile, getAllProfiles, getUserProfile, deleteUserProfile }
+//route PUT /api/v1/profile/experience
+async function putExp(req, res) {
+    try {
+        let { title, company, location, from, to, currently, description } = req.body;
+
+        let profile = await profileModel.findOne({ user: req.body.user })
+        profile.experience.push({ title, company, location, from, to, currently, description });
+        await profile.save()
+        res.json("added exp")
+
+    } catch (err) {
+        res.status(400).json(err.message)
+    }
+}
+//route /api/v1/profile/experience
+async function deleteExp(req, res) {
+
+    try {
+        let user = await profileModel.findOne({ user: req.body.user })
+        user.experience = [];
+        user.save();
+        res.json("deleted");
+    } catch (err) {
+        res.status(400).json(err.message);
+    }
+}
+//route PUT /api/v1/profile/education
+async function putEdu(req, res) {
+    try {
+        let { school, degree, fieldOfStudy, from, to, current, description } = req.body;
+
+        let profile = await profileModel.findOne({ user: req.body.user })
+        profile.education.push({ school, degree, fieldOfStudy, from, to, current, description });
+        await profile.save()
+        res.json("added education")
+
+    } catch (err) {
+        res.status(400).json(err.message)
+    }
+}
+//route /api/v1/profile/education
+async function deleteEdu(req, res) {
+
+    try {
+        let user = await profileModel.findOne({ user: req.body.user })
+        user.education = [];
+        user.save();
+        res.json("deleted");
+    } catch (err) {
+        res.status(400).json(err.message);
+    }
+}
+module.exports = { getProfile, postProfile, getAllProfiles, getUserProfile, deleteUserProfile, putExp, deleteExp, putEdu, deleteEdu }
