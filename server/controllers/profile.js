@@ -13,8 +13,11 @@ async function postProfile(req, res) {
         let data = req.body;
         let isExist = await profileModel.findOne({ user: data.user })
         // data.skills = data.skills[0].split(',').map(skills => skills.trim())
-        let skills = data.skills.split(',')
-        data.skills = skills;
+        console.log("splitt")
+        // let skills = data.skills.split(',')
+        // data.skills = skills;
+        let string = data.skills;
+        data.skills = string.toString().split(',');
         let profile = new profileModel(data);
         if (!isExist) {
             profile.save();
@@ -24,11 +27,12 @@ async function postProfile(req, res) {
         let user = await profileModel.findOneAndUpdate({ user: data.user }, data)
         return res.status(200).json("saved");
     } catch (error) {
+        console.log("Err here")
         res.status(400).json(error.message);
     }
 }
 
-
+//route GET /api/v1/profile/me
 async function getProfile(req, res) {
     try {
         let prof = await profileModel.findOne({ user: req.body.user })
@@ -38,7 +42,7 @@ async function getProfile(req, res) {
         res.status(400).json(error.message)
     }
 }
-
+//route GET /api/v1/profile/
 async function getAllProfiles(req, res) {
 
     try {
@@ -48,5 +52,38 @@ async function getAllProfiles(req, res) {
         res.status(400).json(error.message)
     }
 }
+//route GET /api/v1/profile/user/:id_user
 
-module.exports = { getProfile, postProfile, getAllProfiles }
+async function getUserProfile(req, res) {
+    // console.log(req.body)
+    try {
+        let userData = await profileModel.findOne({ user: req.params.id_user })
+        if (!userData) {
+            return res.status(400).json("user not found")
+        }
+        res.status(200).json(userData)
+
+    } catch (error) {
+        if (error.kind === "ObjecdId") {
+            return res.status(400).json("user not found");
+        }
+        res.status(500).json(error.message);
+    }
+}
+
+//route DELETE /api/v1/profile/user/:id_user
+async function deleteUserProfile(req, res) {
+
+    try {
+        let userData = await profileModel.findOneAndDelete({ user: req.body.user })
+
+        res.status(200).json("deleted")
+    } catch (error) {
+        if (error.kind === "ObjecdId") {
+            return res.status(400).json("user not found");
+        }
+        res.status(500).json(error.message);
+    }
+}
+
+module.exports = { getProfile, postProfile, getAllProfiles, getUserProfile, deleteUserProfile }

@@ -1,7 +1,7 @@
 const express = require("express")
 const { jwtVerify, authData } = require('../helper/authHelper')
 // const { getProfile, saveProfile } = require('../controllers/profileController')
-const { getProfile, postProfile, getAllProfiles } = require('../controllers/profile')
+const { getProfile, postProfile, getAllProfiles, getUserProfile, deleteUserProfile } = require('../controllers/profile')
 
 const profileRouter = express.Router()
 
@@ -23,4 +23,17 @@ profileRouter
 profileRouter
     .route('/')
     .get(jwtVerify, getAllProfiles)
+// .get(jwtVerify, deleteUserProfile)
+
+//@route GET /api/v1/profile/user/user_id
+//@desc  to get user profiles
+profileRouter
+    .route('/user/:id_user')
+    .get(getUserProfile)
+
+//@route DELETE /api/v1/profile/user/user_id
+//@desc  to get user profiles
+profileRouter
+    .route('/user/:id_user')
+    .delete(jwtVerify, deleteUserProfile)
 module.exports = profileRouter
