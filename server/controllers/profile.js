@@ -3,6 +3,7 @@ const express = require('express')
 const axios = require("axios")
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
+const { parse, stringify, toJSON, fromJSON } = require('flatted')
 require("dotenv").config();
 
 //@route POST /api/v1/profile/save
@@ -147,12 +148,17 @@ async function getGithubRepos(req, res) {
     try {
 
         // const uri = `https://api.github.com/user/${req.params.username}/repos?per_page=5&client_id=${process.env.githubClientId}&client_secret=${process.env.githubClientSecret}`
-        console.log(req.params.username)
 
-        let githubProfile = await axios.get(`https://api.github.com/users/${req.params.username}/repos?per_page=5`);
-        githubProfile = JSON.stringify(githubProfile)
-        res.send(githubProfile);
+        // let githubProfile = await axios.get(`https://api.github.com/users/${req.params.username}/repos?per_page=5`);
+        let githubProfile = await axios.get(`https://api.github.com/users/jogeshgupta963/repos?per_page=5`);
+        // // JSON.stringify(githubProfile)
+        // // console.log(githubProfile)
+        // JSON.parse(githubProfile)
+        // res.json(githubProfile);
+        // flatted
 
+        Flatted.parse(Flatted.stringify(githubProfile))
+        res.json(githubProfile);
     } catch (err) {
         res.status(400).json(err.message);
     }
