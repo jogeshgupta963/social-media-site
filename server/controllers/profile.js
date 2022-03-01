@@ -1,8 +1,9 @@
 const profileModel = require("../model/profileModel")
 const express = require('express')
+const axios = require("axios")
 const mongoose = require('mongoose')
 const jwt = require('jsonwebtoken')
-
+require("dotenv").config();
 
 //@route POST /api/v1/profile/save
 //@desc to save user details in its profile
@@ -139,4 +140,21 @@ async function deleteEdu(req, res) {
         res.status(400).json(err.message);
     }
 }
-module.exports = { getProfile, postProfile, getAllProfiles, getUserProfile, deleteUserProfile, putExp, deleteExp, putEdu, deleteEdu }
+
+//route /api/v1/profile/github/:username
+async function getGithubRepos(req, res) {
+
+    try {
+
+        // const uri = `https://api.github.com/user/${req.params.username}/repos?per_page=5&client_id=${process.env.githubClientId}&client_secret=${process.env.githubClientSecret}`
+        console.log(req.params.username)
+
+        let githubProfile = await axios.get(`https://api.github.com/users/${req.params.username}/repos?per_page=5`);
+        githubProfile = JSON.stringify(githubProfile)
+        res.send(githubProfile);
+
+    } catch (err) {
+        res.status(400).json(err.message);
+    }
+}
+module.exports = { getProfile, postProfile, getAllProfiles, getUserProfile, deleteUserProfile, putExp, deleteExp, putEdu, deleteEdu, getGithubRepos }

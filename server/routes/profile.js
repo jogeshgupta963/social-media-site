@@ -1,7 +1,7 @@
 const express = require("express")
 const { jwtVerify } = require('../helper/authHelper')
 // const { getProfile, saveProfile } = require('../controllers/profileController')
-const { getProfile, postProfile, getAllProfiles, getUserProfile, deleteUserProfile, putExp, deleteExp, putEdu, deleteEdu } = require('../controllers/profile')
+const { getProfile, postProfile, getAllProfiles, getUserProfile, deleteUserProfile, putExp, deleteExp, putEdu, deleteEdu, getGithubRepos } = require('../controllers/profile')
 const { profileExpValidation, profileEduValidation } = require('../helper/validation')
 const profileRouter = express.Router()
 
@@ -51,5 +51,9 @@ profileRouter
     .put(jwtVerify, profileEduValidation, putEdu)
     .delete(jwtVerify, deleteEdu)
 
+//@route GET /api/v1/profile/
 
+profileRouter
+    .route('/github/:username')
+    .get(getGithubRepos)
 module.exports = profileRouter

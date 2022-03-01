@@ -37,9 +37,9 @@ async function profileExpValidation(req, res, next) {
 }
 async function profileEduValidation(req, res, next) {
     try {
-        let { school, degree } = req.body;
-        if (school === "" || degree === "") {
-            return res.json("school or degree  unfilled");
+        let { school, degree, fieldOfStudy } = req.body;
+        if (school === "" || degree === "" || fieldOfStudy == "") {
+            return res.json("school , degree , fieldOfStudy is  unfilled");
         }
         else next();
     } catch (error) {
