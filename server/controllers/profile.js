@@ -147,14 +147,14 @@ async function getGithubRepos(req, res) {
 
     try {
 
-        // const uri = `https://api.github.com/user/${req.params.username}/repos?per_page=5&client_id=${process.env.githubClientId}&client_secret=${process.env.githubClientSecret}`
+        const uri = `https://api.github.com/user/${req.params.username}/repos?per_page=5&client_id=${process.env.githubClientId}&client_secret=${process.env.githubClientSecret}`
 
         // let githubProfile = await axios.get(`https://api.github.com/users/${req.params.username}/repos?per_page=5`);
         let githubProfile = await axios.get(`https://api.github.com/users/jogeshgupta963/repos?per_page=5`);
         // // JSON.stringify(githubProfile)
-        // // console.log(githubProfile)
-        // JSON.parse(githubProfile)
-        // res.json(githubProfile);
+        console.log(githubProfile)
+        // githubProfile = JSON.parse(githubProfile)
+        res.json(githubProfile);
         // flatted
 
         Flatted.parse(Flatted.stringify(githubProfile))
