@@ -1,14 +1,18 @@
 import React, { Fragment, useState } from 'react'
 import axios from 'axios'
+import { connect } from 'react-redux'
 import { Link } from 'react-router-dom'
-function Register() {
+import PropTypes from 'prop-types'
+
+import { setAlert } from '../../redux/actions/alert'
+// import { SET_ALERT } from '../../redux/actions/types'
+
+function Register(props) {
 
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [pass, setPass] = useState("");
     const [conPass, setConPass] = useState("");
-
-    const [formData, setFormData] = useState({});
 
 
     function nameChangeHandle(e) {
@@ -26,9 +30,14 @@ function Register() {
     async function registerClickHandle(e) {
 
         try {
-            e.preventDefault();
-            let data = await axios.post('http://localhost:80/api/v1/user', { name: name, email: email, password: pass });
-
+            if (pass == conPass) {
+                e.preventDefault();
+                let data = await axios.post('http://localhost:80/api/v1/user', { name: name, email: email, password: pass });
+            }
+            else {
+                console.log("password doesnt match")
+                props.setAlert("passwords doesnt match", 'danger')
+            }
         } catch (error) {
             console.log(error.message)
         }
@@ -82,4 +91,7 @@ function Register() {
     )
 }
 
-export default Register
+Register.propTypes = {
+    setAlert: PropTypes.func.isRequired
+}
+export default connect(null, { setAlert })(Register)

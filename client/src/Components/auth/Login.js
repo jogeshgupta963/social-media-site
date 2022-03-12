@@ -17,13 +17,9 @@ function Login() {
         e.preventDefault()
         // console.log(email, " ", pass)
         try {
-            if (pass == conPass) {
-                let data = await axios.post('http://localhost:80/api/v1/auth', { email, password: pass })
-                console.log(data.data);
-            }
-            else {
-                console.log("password doesnt match")
-            }
+
+            let data = await axios.post('http://localhost:80/api/v1/auth', { email, password: pass })
+            console.log(data.data);
 
         } catch (error) {
             console.log(error.message)
